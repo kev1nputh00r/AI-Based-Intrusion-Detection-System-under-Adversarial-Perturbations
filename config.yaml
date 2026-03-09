@@ -1,0 +1,55 @@
+project:
+  name: Robust Hybrid Intrusion Detection System
+  version: 1.0
+
+dataset:
+  train_csv: data/Tuesday-WorkingHours.pcap_ISCX.csv
+  test_csv: null
+  target_col: " Label"
+  drop_cols: []
+  categorical_cols: []
+  normalize: true
+  test_size: 0.2
+  random_state: 42
+
+model:
+  supervised: random_forest
+  anomaly: isolation_forest
+  hybrid_weight: 0.7
+  calibrate: true
+  available_supervised:
+    - random_forest
+    - gradient_boosting
+  available_anomaly:
+    - isolation_forest
+    - one_class_svm
+
+training:
+  n_estimators: 300
+  max_depth: null
+  class_weight: balanced
+  random_state: 42
+
+evaluation:
+  threshold_target_fpr: 0.05
+  export_confusion_matrix: true
+  export_roc_points: true
+
+ablation:
+  run: true
+  thresholds:
+    - 0.3
+    - 0.5
+    - 0.7
+
+adversarial:
+  pgd_steps: 10
+  epsilon: 0.05
+  noise_std: 0.02
+  feature_mask_ratio: 0.05
+
+output:
+  artifacts_dir: artifacts
+  reports_dir: artifacts/reports
+  models_dir: artifacts/models
+  metrics_file: artifacts/reports/metrics.json
